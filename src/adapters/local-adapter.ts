@@ -58,7 +58,8 @@ export const GOLDEN_ASSET_AP001: AssetPassport = {
         sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
         admissibilityStatus: 'ADMISSIBLE',
         freshnessTimestamp: '2026-03-15T14:30:00.000Z',
-        custodySource: 'KOS Evidence Platform / Project Projections',
+        custodySource: 'GOLDEN_FIXTURE (Local Adapter Baseline)',
+        provenanceType: 'GOLDEN_FIXTURE',
       },
     },
     {
@@ -79,7 +80,8 @@ export const GOLDEN_ASSET_AP001: AssetPassport = {
         sha256: '9f83c6051a842e4822063e0237560f044cd0669e222a315ac0da10136a7c00f1',
         admissibilityStatus: 'ADMISSIBLE',
         freshnessTimestamp: '2026-09-28T09:15:00.000Z',
-        custodySource: 'KOS Evidence Platform / Telemetry Ingestion',
+        custodySource: 'GOLDEN_FIXTURE (Local Adapter Baseline)',
+        provenanceType: 'GOLDEN_FIXTURE',
       },
     },
   ],
@@ -89,7 +91,7 @@ export const GOLDEN_ASSET_AP001: AssetPassport = {
       severity: 'CRITICAL',
       headline: 'Risco iminente de perda de contingência energética (SLA Tier 1 em risco)',
       candidateExplanation: 'O banco de baterias opera com apenas 42 minutos de autonomia (nominal 8 horas) com aquecimento a 48°C, somado à falha de acoplamento do gerador diesel. Em caso de instabilidade na rede concessionária, o site entrará em blackout.',
-      evidenceBasis: 'Evidência Governamental #TEL-0928 (doc-telemetry-2026-09-28) e Relatório #EE-902 (doc-inspec-2026-03).',
+      evidenceBasis: 'Evidência Governada #TEL-0928 (doc-telemetry-2026-09-28 [GOLDEN_FIXTURE]) e Relatório #EE-902 (doc-inspec-2026-03 [GOLDEN_FIXTURE]).',
       recommendedAction: 'Despacho emergencial de equipe técnica para troca do módulo de baterias e desengripamento do atuador do gerador.',
       raisedAt: '2026-09-28T09:30:00.000Z',
       isCandidateOnly: true,
@@ -228,9 +230,13 @@ export class LocalAdapter {
         { period: '2026-09', count: 1 },
       ],
       sourceCoverage: [
-        { sourceName: 'KOS Evidence Platform', verifiedCount: 2 },
+        { sourceName: 'GOLDEN_FIXTURE (Local Adapter Baseline)', verifiedCount: 2 },
         { sourceName: 'Manual Operator Logs', verifiedCount: 0 },
       ],
+      provenanceBreakdown: {
+        liveGovernedCount: 0,
+        goldenFixtureCount: 2,
+      },
     };
   }
 }

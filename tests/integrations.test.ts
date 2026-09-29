@@ -24,6 +24,7 @@ describe('Evidence/Source Projection & Unavailable Integration Behavior', () => 
     expect(res.statusCode).toBe(200);
     const body = JSON.parse(res.body);
     expect(body.evidenceApi).toBeDefined();
+    expect(body.evidenceApi.provenanceTruth).toBe('FIXTURE_ONLY');
     expect(body.foundryApi.status).toBe('REFERENCE_PATTERN');
     expect(body.studioCognition.status).toBe('CANDIDATE_ONLY');
   });

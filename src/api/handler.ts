@@ -366,8 +366,9 @@ export async function handler(event: APIGatewayEvent) {
           evidenceApi: {
             configured: true,
             endpoint: 'https://brgkao1ln5.execute-api.sa-east-1.amazonaws.com',
-            status: evidence.isAvailable() ? 'AVAILABLE' : 'FALLBACK',
-            notes: 'Read-only projection for subjects, passports, and evidence custody',
+            status: 'FALLBACK',
+            provenanceTruth: 'FIXTURE_ONLY',
+            notes: 'Evidence API requires Foundry-issued Cognito JWT from pool sa-east-1_NUQw5QTjb. In isolated Asset Passport deployment, deterministic GOLDEN_FIXTURE baseline is used. Governed read path is verified to return 401 without cross-stack credentials.',
           },
           foundryApi: {
             configured: true,

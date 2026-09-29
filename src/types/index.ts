@@ -30,6 +30,8 @@ export interface SpatialBinding {
   disclaimer: string; // "SubjectIdentity != SpatialBinding; Location != Provenance"
 }
 
+export type ProvenanceType = 'LIVE_GOVERNED_READ' | 'GOLDEN_FIXTURE';
+
 export interface EvidenceReference {
   evidenceId: string;
   documentId?: string;
@@ -38,7 +40,8 @@ export interface EvidenceReference {
   sha256?: string;
   admissibilityStatus: 'ADMISSIBLE' | 'PENDING' | 'LOCAL_RECORD';
   freshnessTimestamp: string;
-  custodySource: string; // e.g. "KOS Evidence Platform / Telemetry", "Field Dispatch Report"
+  custodySource: string; // e.g. "GOLDEN_FIXTURE (Local Adapter Baseline)", "KOS Evidence Platform"
+  provenanceType?: ProvenanceType;
 }
 
 export interface Observation {
@@ -112,7 +115,7 @@ export interface ChatMessage {
   sender: 'user' | 'assistant';
   content: string;
   timestamp: string;
-  category?: 'explanation' | 'attention' | 'general';
+  category?: 'explanation' | 'attention' | 'general' | 'out_of_context';
   candidateNotice?: boolean;
 }
 
@@ -128,6 +131,10 @@ export interface ObservabilityMetrics {
   recentChangesCount: number;
   observationsByMonth: { period: string; count: number }[];
   sourceCoverage: { sourceName: string; verifiedCount: number }[];
+  provenanceBreakdown?: {
+    liveGovernedCount: number;
+    goldenFixtureCount: number;
+  };
 }
 
 export interface IntegrationStatus {
@@ -135,13 +142,42 @@ export interface IntegrationStatus {
     configured: boolean;
     endpoint: string;
     status: 'AVAILABLE' | 'UNAVAILABLE' | 'FALLBACK';
+    provenanceTruth: 'LIVE_READ_PROVEN' | 'FIXTURE_ONLY' | 'PARTIAL';
+    notes: string;
   };
   foundryApi: {
     configured: boolean;
     status: 'REFERENCE_PATTERN' | 'LOCAL';
+    notes: string;
   };
   studioCognition: {
     configured: boolean;
     status: 'CANDIDATE_ONLY' | 'LOCAL_SYNTHESIS';
+    notes: string;
   };
+}
+
+export const ATTRIBUTE_DISPLAY_NAMES: Record<string, string> = {
+  towerHeightMeters: 'Altura da torre',
+  backupPowerType: 'Energia de contingência',
+  primaryCarriers: 'Operadoras',
+  structuralLicense: 'Licença estrutural',
+  lastPreventiveDate: 'Última manutenção preventiva',
+  nominalBatteryAutonomyHours: 'Autonomia nominal',
+  heightMeters: 'Altura da torre',
+  carriers: 'Operadoras',
+};
+
+export function formatAttributeName(key: string): string {
+  return ATTRIBUTE_DISPLAY_NAMES[key] || key;
+}
+
+export function formatAttributeValue(key: string, value: any): string {
+  if (key === 'towerHeightMeters' || key === 'heightMeters') {
+    return `${value} metros`;
+  }
+  if (key === 'nominalBatteryAutonomyHours') {
+    return `${value} horas`;
+  }
+  return String(value);
 }
